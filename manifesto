@@ -365,3 +365,29 @@ Turns out that if I rebase with the "-p" option, it should preserve
 merge commits when doing the rebase onto public_master.  This may or
 may not be desirable.  But this change will be incorporated with that
 option so we can see it work.
+
+So if it is really required to preserve all the look of the master
+branch, complete with merge commits from side branches such as
+develop, the amended process would be:
+
+------
+#!/bin/sh
+git checkout master
+git checkout -b public_temp
+git rebase -p --onto public_master LAST_PUBLIC_SYNC
+git checkout public_master
+git merge public_temp
+git checkout master
+git tag -f LAST_PUBLIC_SYNC
+
+# This might need to be a separate script, to give the cabal the
+# opportunity (and obligation) to verify that all is well
+git push origin :
+git push admin :
+git push admin --force LAST_PUBLIC_SYNC
+git branch -D public_temp
+git push public public_master:master
+-------
+
+I am not convinced that this really adds anything to the experience,
+but it might.
