@@ -253,3 +253,53 @@ Our git tree now looks like:
 * 3a55821 Initial commit
 
 
+--- Possible script for doing this easily
+#!/bin/sh
+git checkout master
+git checkout -b public_temp
+git rebase --onto public_master LAST_PUBLIC_SYNC
+git checkout public_master
+git merge public_temp
+git checkout master
+git tag -f LAST_PUBLIC_SYNC
+
+# This might need to be a separate script, to give the cabal the
+# opportunity (and obligation) to verify that all is well
+git push origin :
+git push admin :
+git push admin --force LAST_PUBLIC_SYNC
+git branch -D public_temp
+git push public public_master:master
+----------------
+
+Cautions:
+
+  - Cabalists MUST assure that master is ready to be shared
+  - it is probably best to do the pushes in a separate script, forcing
+    a review of the git tree to make absolutely certain that it's correct.
+  - Jason and I had discussed making the actual push to public (last step
+    in script above) have a "two-person rule" --- that is, at least two
+    cabalists must sign off on the state of the admin repo before agreeing
+    that it is safe to push to public repo.
+
+I should also note that I have been following a similar process in this toy
+repo that I have been following when doing develop->master merges of Xyce:
+
+   git checkout master
+   git merge --no-ff develop
+   git checkout develop
+   git merge master    (fast forward merge)
+
+
+This collapses the develop and master "swim lanes" into a single
+commit, giving it a clear merging lane pattern rather than a "ladder"
+pattern.  This makes for much more readable branching structure in
+gitk or "git log --oneline--all --graph --decorate"
+
+Another note: I do "git log --oneline--all --graph --decorate" so
+often I have it aliased:
+
+    git config --global alias.gl "log --oneline--all --graph --decorate"
+
+so that I can just do "git gl" instead of the big command.  I chose
+"gl" because to me it stands for "graphical log".
