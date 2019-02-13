@@ -121,3 +121,135 @@ actually called "master" in the public repo.
 * 3a55821 Initial commit
 
 So far, so good.  Now let's see how hard it is to keep everything in sync.
+
+
+------
+We have added more content onto develop and merged it into master:
+
+* 41ea260 (public/master, admin/public_master, public_master) Document beginning of process
+* 6e64d83 Add more content
+* 37cb648 Begin cleanup for external
+* a71ad9e Beginning of public history (truncated)
+
+*   63071f1 (origin/master, origin/develop, origin/HEAD, admin/master, admin/develop, master, develop) Merge branch 'develop'
+|\
+| * 6f382be Start adding more content
+|/
+*   3fb76d5 (tag: LAST_PUBLIC_SYNC) Merge branch 'develop'
+|\
+| * 774428e Document beginning of process
+|/
+*   dcb469e Merge branch 'develop'
+|\
+| * aa4d6bd Add more content
+|/
+*   d227f4e Merge branch 'develop'
+|\
+| * a78db5a Begin cleanup for external
+|/
+*   cbc5a78 (tag: START_PUBLIC) Merge branch 'develop'
+|\
+| *   2bf5b06 Merge branch 'feature-obfuscation' into develop
+| |\
+|/ /
+| * c7da91d Start describing plan
+|/
+* e9d5706 Add a few words
+* 16ecf0d Start populating the early history of the project.
+* 3a55821 Initial commit
+
+Now let's try to sync everything up again:
+  git checkout -b public_temp
+  git rebase --onto public_master LAST_PUBLIC_SYNC
+  git --oneline --decorate --all --graph
+* cd2c5a9 (HEAD -> public_temp) Start adding more content
+* 41ea260 (public/master, admin/public_master, public_master) Document beginning of process
+* 6e64d83 Add more content
+* 37cb648 Begin cleanup for external
+* a71ad9e Beginning of public history (truncated)
+*   63071f1 (origin/master, origin/develop, origin/HEAD, admin/master, admin/develop, master, develop) Merge branch 'develop'
+|\  
+| * 6f382be Start adding more content
+|/  
+*   3fb76d5 (tag: LAST_PUBLIC_SYNC) Merge branch 'develop'
+|\  
+| * 774428e Document beginning of process
+|/  
+*   dcb469e Merge branch 'develop'
+|\  
+| * aa4d6bd Add more content
+|/  
+*   d227f4e Merge branch 'develop'
+|\  
+| * a78db5a Begin cleanup for external
+|/  
+*   cbc5a78 (tag: START_PUBLIC) Merge branch 'develop'
+|\  
+| *   2bf5b06 Merge branch 'feature-obfuscation' into develop
+| |\  
+|/ /  
+| * c7da91d Start describing plan
+|/  
+* e9d5706 Add a few words
+* 16ecf0d Start populating the early history of the project.
+* 3a55821 Initial commit
+
+
+OK, we have it.  Notice that each time we do this rebase onto the
+public side, we lose all evidence of branch merges.  This might or
+might be an issue.
+
+Now merge public_temp into public_master
+  git checkout public_master
+  git merge public_temp
+  git branch -D public_temp
+
+Finally we push all the stuffs:
+  git checkout master
+  git tag -f LAST_PUBLIC_SYNC
+  git push admin --force LAST_PUBLIC_SYNC
+  git push origin :
+  git push admin :
+  git push public public_master:master
+
+Note that it is ESSENTIAL to specify "public_master:master" in the
+last command, because if we try "git push public :" then it'll try to
+push master (not public_master) to the public remote, and refuse to do
+so because there are commits in public/master that don't exist in
+either origin/master or admin/master.
+
+Our git tree now looks like:
+
+* cd2c5a9 (public/master, admin/public_master, public_master) Start adding more content
+* 41ea260 Document beginning of process
+* 6e64d83 Add more content
+* 37cb648 Begin cleanup for external
+* a71ad9e Beginning of public history (truncated)
+*   63071f1 (HEAD -> develop, tag: LAST_PUBLIC_SYNC, origin/master, origin/develop, origin/HEAD, admin/master, admin/develop, master) Merge branch 'develop'
+|\
+| * 6f382be Start adding more content
+|/
+*   3fb76d5 Merge branch 'develop'
+|\
+| * 774428e Document beginning of process
+|/
+*   dcb469e Merge branch 'develop'
+|\
+| * aa4d6bd Add more content
+|/
+*   d227f4e Merge branch 'develop'
+|\
+| * a78db5a Begin cleanup for external
+|/
+*   cbc5a78 (tag: START_PUBLIC) Merge branch 'develop'
+|\
+| *   2bf5b06 Merge branch 'feature-obfuscation' into develop
+| |\
+|/ /
+| * c7da91d Start describing plan
+|/
+* e9d5706 Add a few words
+* 16ecf0d Start populating the early history of the project.
+* 3a55821 Initial commit
+
+
