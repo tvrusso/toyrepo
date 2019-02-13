@@ -54,3 +54,5 @@ be enough (depends on whether the rebase rewrites commits that already
 exist on public_master or not).  This will be part of the
 experimentation.
 
+-- For our purposes, we have decided that in this repo commit d227f4e
+   will mark the beginning of the public history.
