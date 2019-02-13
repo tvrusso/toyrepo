@@ -358,3 +358,10 @@ public_master, and commit d227f4e as START_PUBLIC.  So it should have gone:
 This highlights the need for this process to be undertaken carefully,
 with more than one set of eyes on the resulting "public" repo before
 it is actually exposed to the public.
+
+---- Note on flattening of history
+
+Turns out that if I rebase with the "-p" option, it should preserve
+merge commits when doing the rebase onto public_master.  This may or
+may not be desirable.  But this change will be incorporated with that
+option so we can see it work.
