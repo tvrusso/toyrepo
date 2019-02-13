@@ -303,3 +303,58 @@ often I have it aliased:
 
 so that I can just do "git gl" instead of the big command.  I chose
 "gl" because to me it stands for "graphical log".
+
+
+---- NOTE!
+
+When I created the public_master branch, I did so by choosing a commit
+that is one older than what I should have chosen, because the clean up
+of "impolitic remarks" should not have been in the history of
+public_master, and it got there.
+
+Here's where it went wrong:
+
+This was the tree before I created public_master:
+
+*   3fb76d5 (HEAD -> develop, origin/master, origin/develop, origin/HEAD, admin/master, admin/develop, master) Merge branch 'develop'
+|\  
+| * 774428e Document beginning of process
+|/  
+*   dcb469e Merge branch 'develop'
+|\  
+| * aa4d6bd Add more content
+|/  
+*   d227f4e Merge branch 'develop'
+|\  
+| * a78db5a Begin cleanup for external
+|/  
+*   cbc5a78 Merge branch 'develop'
+|\  
+| *   2bf5b06 Merge branch 'feature-obfuscation' into develop
+| |\  
+|/ /  
+| * c7da91d Start describing plan
+|/  
+* e9d5706 Add a few words
+* 16ecf0d Start populating the early history of the project.
+* 3a55821 Initial commit
+
+
+I incorrectly chose commit d227f4e as the first that should be in
+public_master, and commit cbc5a78 as "START_PUBLIC".  The result is
+that the first commit in public_master still has the file
+"impolitic_remark" and commit d227f4e removes that file.
+
+Instead, I should have chosen commit dcb469e as the first real commit of
+public_master, and commit d227f4e as START_PUBLIC.  So it should have gone:
+
+  git tag -f START_PUBLIC d227f4e
+  git push admin START_PUBLIC
+  git checkout -b public_master
+  echo 'Beginning of public history (truncated)' | git commit-tree START_PUBLIC^{tree}
+  (then rebase public_master onto the SHA-1 emitted by commit-tree)
+
+
+This highlights the need for this process to be undertaken carefully,
+with more than one set of eyes on the resulting "public" repo before
+it is actually exposed to the public.
