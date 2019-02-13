@@ -1,0 +1,56 @@
+My primary goal in exploring options is to come up with a way that
+makes it relatively painless to share at least part of the project's
+git history with the public on github, while preventing ancient
+history of the project from polluting the public repo, AND minimizing
+the heartache for Xyce developers.
+
+The driving idea here is that we are NOT creating a github project for
+the purpose of opening the project up to collaboration with all and
+sundry, just a way of short-circuiting our normal release process for
+the purposes of getting code out to particularly important
+collaborators on a more rapid cycle.
+
+With that primary use case in mind, going overboard with the original
+idea of "split the repo into two parts, one historical, one for all
+future work" seems onerous and potentially dangerous.  Yes, doing so
+would be just about the only way to go if we needed the Github repo to
+be a working repo for back-and-forth collaboration with a huge user
+and developer base.
+
+But since we're viewing this Github repo as more of a distribution
+channel than an active repo, it may be better to make it a *copy* of
+part of the project history rather than a replacement working repo.
+
+This will be a test of how well that can work.
+
+The requirements
+
+  - No project history prior to some effective date/commit should ever appear
+    in the github repo.
+  - We will not accept code from the github community except under very
+    limited circumstances.
+  - Only master branch will be shared, but only after that effective date.
+
+How we're going to try to do things:
+
+  - The effective starting commit on master will be tagged with the
+    "PUBLIC_START" tag
+
+  - Maintain a separate branch ("public_master") of the code, which
+    will contain ONLY commits from master made after the effective
+    date, but which will have been rebased onto an empty commit (made
+    with "git commit-tree").
+
+  - Tagging master after public_master rebase with LAST_PUBLIC_SYNC
+
+  - public_master will perioically be synced with master by creating a
+    temporary "public_sync" branch at master, rebasing public_sync to
+    LAST_PUBLIC_SYNC onto public_master.  LAST_PUBLIC_SYNC will be force-moved
+    and force-pushed to commit last synced.
+
+It may not be necessary to do the tagging of LAST_PUBLIC_SYNC, as
+rebasing all of master back to PUBLIC_START onto the fake commit might
+be enough (depends on whether the rebase rewrites commits that already
+exist on public_master or not).  This will be part of the
+experimentation.
+
