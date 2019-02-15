@@ -391,3 +391,34 @@ git push public public_master:master
 
 I am not convinced that this really adds anything to the experience,
 but it might.
+
+-----
+
+Actually, when it comes to releases and release branches, I see the
+point of maintaining the branching structure.  I have just created a
+"release branch" of this repo and generated a public release out of
+it.  It went like this:
+
+    git checkout -b release-0.0.1
+    emacs -nw RELEASE_NOTES
+    git add .
+    git commit
+    emacs -nw RELEASE_NOTES
+    git add .
+    git commit
+    git tag -a -m "Official release 0.0.1" Release-0.0.1
+    git push origin release-0.0.1
+    git push origin Release-0.0.1
+    git push admin release-0.0.1
+    git push admin Release-0.0.1
+    git push origin : ; git push admin :
+    #then we execute the normal "copy to public_master process..."
+      git checkout master
+      [...etc...]
+      git push public public_master:master
+    #now create a tag for the public repo --- not the same as the internal tag
+    git tag -a -m "Relase 0.0.1" PUBLIC-Release-0.0.1 87a0383   # This is the SHA of the commit that corresponds to the Release-0.0.1 tag, but on the public_master branch.
+    git push public PUBLIC-Release-0.0.1
+    git push admin PUBLIC-Release-0.0.1
+
+
