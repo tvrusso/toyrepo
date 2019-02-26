@@ -422,3 +422,29 @@ it.  It went like this:
     git push admin PUBLIC-Release-0.0.1
 
 
+-----
+Actually depoying to github:
+
+OK, we have the internal copy of a public repo on gitlab, now we wanna get it to github.  How?
+
+Easiest way is just to set up repo mirroring in gitlab.
+
+Create an empty github project to receive the mirror.
+
+On gitlab, choose repository mirroring and use the
+ssh://git@gitlab.com/... URL as the mirror location.
+
+Use the "Detect Host Keys" button, or nothing will work.  You either
+have to use that, or key in a host key directly.  If you skip this,
+the sync will just fail.
+
+Use ssh public key as the authentication method and gitlab will
+generate a new SSH key pair for use for this purpose.  Use the "copy
+ssh key to clipboard" button to get the public key, then add it as a
+Deploy Key on the github side.  Give the deploy key read/write access.
+
+Once the deploy key is entered on the Github side, the sync button on
+the gitlab side should Just Work.  Thereafter, pushes to the mirrored
+repo will automagically appear on the Github mirror after some kind of
+a delay.
+
