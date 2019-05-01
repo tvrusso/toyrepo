@@ -73,7 +73,9 @@ experimentation.
 
 -- For our purposes, we have decided that in this repo commit d227f4e
    will mark the beginning of the public history.  This is where START_PUBLIC
-   points.
+   points.  Note: we WANTED to make d227f4e the start of public history,
+   and it SHOULD have been where START_PUBLIC pointed, but I made a mistake
+   and started everything from the commit just prior to that, cbc5a78
 
 -- We first created the public_master commit by rebasing from commit
    3fb76d5 back to START_PUBLIC onto public_master:
@@ -98,24 +100,24 @@ actually called "master" in the public repo.
 * 37cb648 Begin cleanup for external
 * a71ad9e Beginning of public history (truncated)
 *   3fb76d5 (HEAD -> develop, origin/master, origin/develop, origin/HEAD, admin/master, admin/develop, master) Merge branch 'develop'
-|\  
+|\
 | * 774428e Document beginning of process
-|/  
+|/
 *   dcb469e Merge branch 'develop'
-|\  
+|\
 | * aa4d6bd Add more content
-|/  
+|/
 *   d227f4e Merge branch 'develop'
-|\  
+|\
 | * a78db5a Begin cleanup for external
-|/  
+|/
 *   cbc5a78 (tag: START_PUBLIC) Merge branch 'develop'
-|\  
+|\
 | *   2bf5b06 Merge branch 'feature-obfuscation' into develop
-| |\  
-|/ /  
+| |\
+|/ /
 | * c7da91d Start describing plan
-|/  
+|/
 * e9d5706 Add a few words
 * 16ecf0d Start populating the early history of the project.
 * 3a55821 Initial commit
@@ -168,28 +170,28 @@ Now let's try to sync everything up again:
 * 37cb648 Begin cleanup for external
 * a71ad9e Beginning of public history (truncated)
 *   63071f1 (origin/master, origin/develop, origin/HEAD, admin/master, admin/develop, master, develop) Merge branch 'develop'
-|\  
+|\
 | * 6f382be Start adding more content
-|/  
+|/
 *   3fb76d5 (tag: LAST_PUBLIC_SYNC) Merge branch 'develop'
-|\  
+|\
 | * 774428e Document beginning of process
-|/  
+|/
 *   dcb469e Merge branch 'develop'
-|\  
+|\
 | * aa4d6bd Add more content
-|/  
+|/
 *   d227f4e Merge branch 'develop'
-|\  
+|\
 | * a78db5a Begin cleanup for external
-|/  
+|/
 *   cbc5a78 (tag: START_PUBLIC) Merge branch 'develop'
-|\  
+|\
 | *   2bf5b06 Merge branch 'feature-obfuscation' into develop
-| |\  
-|/ /  
+| |\
+|/ /
 | * c7da91d Start describing plan
-|/  
+|/
 * e9d5706 Add a few words
 * 16ecf0d Start populating the early history of the project.
 * 3a55821 Initial commit
@@ -317,24 +319,24 @@ Here's where it went wrong:
 This was the tree before I created public_master:
 
 *   3fb76d5 (HEAD -> develop, origin/master, origin/develop, origin/HEAD, admin/master, admin/develop, master) Merge branch 'develop'
-|\  
+|\
 | * 774428e Document beginning of process
-|/  
+|/
 *   dcb469e Merge branch 'develop'
-|\  
+|\
 | * aa4d6bd Add more content
-|/  
+|/
 *   d227f4e Merge branch 'develop'
-|\  
+|\
 | * a78db5a Begin cleanup for external
-|/  
+|/
 *   cbc5a78 Merge branch 'develop'
-|\  
+|\
 | *   2bf5b06 Merge branch 'feature-obfuscation' into develop
-| |\  
-|/ /  
+| |\
+|/ /
 | * c7da91d Start describing plan
-|/  
+|/
 * e9d5706 Add a few words
 * 16ecf0d Start populating the early history of the project.
 * 3a55821 Initial commit
