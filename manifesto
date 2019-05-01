@@ -122,6 +122,19 @@ actually called "master" in the public repo.
 * 16ecf0d Start populating the early history of the project.
 * 3a55821 Initial commit
 
+Finally, we tag master with LAST_PUBLIC_SYNC
+
+  git checkout master
+  git tag -f LAST_PUBLIC_SYNC
+  git push admin --force LAST_PUBLIC_SYNC
+
+Here, since we're just creating the LAST_PUBLIC_SYNC tag we don't
+really need the force options, but we're going to need them later, so
+leave them.
+
+Now we can tell the last commit we synced, and our future syncs will start
+from here.
+
 So far, so good.  Now let's see how hard it is to keep everything in sync.
 
 
